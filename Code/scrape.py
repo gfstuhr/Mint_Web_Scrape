@@ -96,4 +96,3 @@ def scrape ():
     return all_budgets, transactions
 
 
-
