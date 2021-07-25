@@ -1,33 +1,49 @@
 from scrape import scrape
-from config import email_list
+from config import email_list, gmail, gmail_pass
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from smtplib import SMTP
-import smtplib
+import smtplib, ssl
 import sys
 
 all_budgets,transactions = scrape()
 
-recipients = [email_list[0]] 
-emaillist = [elem.strip().split(',') for elem in recipients]
+# Defining subjectline and sender email
 msg = MIMEMultipart()
-msg['Subject'] = "Daily Budget Update"
-msg['From'] = email_list[1]
+msg['Subject'] = 'Daily Budget Update'
+msg['From'] = gmail
 
-html = """\
-<html>
-  <head></head>
-  <body>
-    {0}
-  </body>
-</html>
-""".format(all_budgets.to_html())
+def send_email():
+  # Creating tables from Pandas DFs
+  html = """\
+  <html>
+    <head></head>
+    <body>
+      {0}
+    </body>
+  </html>
+  """.format(all_budgets.to_html())
 
-part1 = MIMEText(html, 'html')
-msg.attach(part1)
+  html2 = """\
+  <html>
+    <head></head>
+    <body>
+      {0}
+    </body>
+  </html>
+  """.format(transactions.to_html())
 
-server = smtplib.SMTP('smtp.gmail.com', 587)
-server.starttls()
-server.sendmail(msg['From'], emaillist , msg.as_string())
-server.quit()
+  # Insert HTML tables into the email
+  part1 = MIMEText(html, 'html')
+  part2 = MIMEText(html2, 'html')
+  msg.attach(part1)
+  msg.attach(part2)
+
+  # Send Email
+  context = ssl.create_default_context()
+  with smtplib.SMTP_SSL('smtp.gmail.com',port=465, context=context) as server:
+      server.login(gmail,gmail_pass)
+      server.sendmail(gmail, email_list, msg.as_string()) 
+
+send_email()
