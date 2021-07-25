@@ -15,9 +15,11 @@ def scrape ():
 
     # Log In to Mint
     browser.visit(url)
-    browser.find_by_id('ius-userid').first.fill(user_email)
-    browser.find_by_id('ius-password').first.fill(user_password)
+    browser.find_by_id('ius-identifier').first.fill(user_email)
     browser.find_by_id('ius-sign-in-submit-btn').first.click()
+    time.sleep(5)
+    browser.find_by_id('ius-sign-in-mfa-password-collection-current-password').first.fill(user_password)
+    browser.find_by_id('ius-sign-in-mfa-password-collection-continue-btn').first.click()
     time.sleep(10)
 
     # Go to transactions page
@@ -30,7 +32,7 @@ def scrape ():
 
     # Getting yesterday's transactions
     html=browser.html
-    transactions = pd.read_html(html)[7]
+    transactions = pd.read_html(html)[6]
     transactions = transactions[['Date','Description','Category','Amount']].droplevel(1,axis=1)
     transactions=transactions[transactions['Date']==yesterday]
 
