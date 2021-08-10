@@ -28,7 +28,7 @@ def scrape ():
 
     # Defining yesterday's date
     yesterday=datetime.now()-timedelta(1)
-    yesterday=datetime.strftime(yesterday, '%b %d')
+    yesterday=datetime.strftime(yesterday, '%b %#d')
 
     # Getting yesterday's transactions
     html=browser.html
