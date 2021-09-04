@@ -73,8 +73,8 @@ def scrape ():
     #Find Everything Else Data
     everything_else = soup.find('li',id='spendingEE-list-total').find_all('strong')
     everything_title = everything_else[0].text
-    everything_spent = everything_else[1].text
-    everything_goal = everything_else[2].text
+    everything_spent = everything_else[2].text
+    everything_goal = everything_else[1].text
     everything_details = {
         'Name': everything_title,
         'Budget Amount': everything_spent,

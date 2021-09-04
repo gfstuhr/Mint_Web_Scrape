@@ -49,8 +49,9 @@ def send_email():
       server.sendmail(gmail, email_list, msg.as_string())
       print('Message Sent') 
 
-schedule.every().day.at("01:30").do(send_email)
+schedule.every().day.at("05:00").do(send_email)
 
 while True:
   schedule.run_pending()
   time.sleep(1)
+
