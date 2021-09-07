@@ -26,15 +26,11 @@ def scrape ():
     browser.click_link_by_partial_text('Transactions')
     time.sleep(10)
 
-    # Defining yesterday's date
-    yesterday=datetime.now()-timedelta(1)
-    yesterday=datetime.strftime(yesterday, '%b %#d')
-
     # Getting yesterday's transactions
     html=browser.html
     transactions = pd.read_html(html)[6]
     transactions = transactions[['Date','Description','Category','Amount']].droplevel(1,axis=1)
-    transactions=transactions[transactions['Date']==yesterday]
+    transactions = transactions.head(5)
 
     # Go to budgets page
     browser.click_link_by_partial_text('Budgets')
