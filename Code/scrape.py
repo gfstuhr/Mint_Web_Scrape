@@ -6,11 +6,12 @@ from bs4 import BeautifulSoup
 import re
 import time
 import warnings
+from webdriver_manager.chrome import ChromeDriverManager
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def scrape ():
     # Browser setup
-    executable_path = {'executable_path': 'chromedriver.exe'}
+    executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
 
     # Log In to Mint
