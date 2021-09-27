@@ -6,13 +6,13 @@ from bs4 import BeautifulSoup
 import re
 import time
 import warnings
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def scrape ():
     # Browser setup
-    executable_path = {'executable_path': ChromeDriverManager().install()}
-    browser = Browser('chrome', **executable_path, headless=False)
+    executable_path = {'executable_path': GeckoDriverManager().install()}
+    browser = Browser('firefox', **executable_path, headless=True)
 
     # Log In to Mint
     browser.visit(url)
